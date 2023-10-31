@@ -21,6 +21,7 @@ import ChatBox from '../components/miscellaneous/ChatBox';
   return (<Box 
     w="100%"
   >
+    
       <ChatContext.Provider>
     <Box  >
       {    <SideDrawer />}
