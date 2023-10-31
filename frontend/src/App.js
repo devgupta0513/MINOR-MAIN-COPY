@@ -11,7 +11,7 @@ function App() {
       
         <Routes>
         <Route path='/' Component={HomePage}/>
-        <Route path='/chats' Component={ChatPage}/>
+        <Route path='/chat' Component={ChatPage}/>
         </Routes>
     </div>
   );
