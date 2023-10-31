@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const SideDrawer = () => {
+    const [search, setSearch] = useState(" ")
+
+
+
+
   return (
-    <div>Side</div>
+    <div>Side drawer</div>
   )
 }
 
