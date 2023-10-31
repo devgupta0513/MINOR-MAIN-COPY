@@ -113,7 +113,7 @@ const SignUp = () => {
             });
             localStorage.setItem("userInfo", JSON.stringify(data));
             setLoading(false);
-            navigate('/chats')
+            navigate('/chat')
             // history.push("/chats");
 
         } catch (error) {
