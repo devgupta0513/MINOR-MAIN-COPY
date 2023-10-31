@@ -1,20 +1,37 @@
-import { Box } from "@chakra-ui/layout"
- 
-import SideDrawer from "../components/miscellaneous/SideDrawer"
+import { useContext } from 'react';
+import { createContext} from "react";
+import {Box} from '@chakra-ui/react'
 
- 
-const ChatPage = () => {
-  // const {user }= ChatState()      
+ import SideDrawer from '../components/miscellaneous/SideDrawer';
+import MyChats from '../components/miscellaneous/MyChats';
+import ChatBox from '../components/miscellaneous/ChatBox';
+ const ChatContext = createContext() 
+
+
+ const ChatPage = () => {
   
-  return ( 
-    <div style={{width:'100%'}}> 
-    {/* {user && <SideDrawer/> } */}
-    <Box>
-          {/* {user && <MyChats/> } */}
-          {/* {user && <ChatBox/> } */}
+  
 
+ 
+  const ChatState =  useContext(ChatContext)
+    
+  const {user}= ChatState ||{}
+
+  return (<Box 
+    w="100%"
+  >
+      <ChatContext.Provider>
+    <Box  >
+      {    <SideDrawer />}
+    
     </Box>
-    </div>
+    <Box display="flex" justifyContent="space-between" h="91.5vh" p="10px" >
+      {  <MyChats/>}
+      {   <ChatBox/>}
+    </Box>
+     </ChatContext.Provider>
+    </Box>
   )
 }
-export default ChatPage  
+
+export default ChatPage;
