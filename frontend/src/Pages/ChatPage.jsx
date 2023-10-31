@@ -2,7 +2,7 @@
 import { useContext } from 'react';
 import { createContext} from "react";
 import {Box} from '@chakra-ui/react'
->>>>>>> dev
+
 
  import SideDrawer from '../components/miscellaneous/SideDrawer';
 import MyChats from '../components/miscellaneous/MyChats';
