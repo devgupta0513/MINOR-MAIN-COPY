@@ -4,16 +4,17 @@ import axios from "axios"
 import { useNavigate } from 'react-router-dom'
 
 const SignUp = () => {
-    const [Name, setName] = useState()
-    const [Email, setEmail] = useState()
-    const [Password, setPassword] = useState()
-    const [ConfirmPassword, setConfirmPassword] = useState()
+    const [name, setName] = useState()
+    const [email, setEmail] = useState()
+    const [password, setPassword] = useState()
+    const [confirmPassword, setConfirmPassword] = useState()
     const [pic, setPic] = useState()
     const [Show, setShow] = useState(false)
+    
     const [loading, setLoading] = useState(false)
     const handleCLick = () => setShow(!Show)
     const toast = useToast()
-    const navigate= useNavigate()
+    const navigate = useNavigate()
 
 
     const postDetails = (pics) => {
@@ -60,10 +61,10 @@ const SignUp = () => {
             return;
         }
     };
-    const submitHandler = async () => { 
-        
+    const submitHandler = async () => {
+
         setLoading(true);
-        if (!Name || !Email || !Password || !ConfirmPassword) {
+        if (!name || !email || !password || !confirmPassword) {
             toast({
                 title: "please fill all the fields",
                 status: "warning",
@@ -75,7 +76,7 @@ const SignUp = () => {
             setLoading(false)
             return;
         }
-        if (Password !== ConfirmPassword) {
+        if (password !== confirmPassword) {
             toast({
                 title: "password do not match",
                 status: "warning",
@@ -86,32 +87,35 @@ const SignUp = () => {
             })
             return;
         }
+        console.log(name, email, password, pic);
         try {
             const config = {
                 headers: {
                     "Content-Type": "application/json",
-                    
                 },
-            }
-            
-        
-            const data= await axios.post("api/user")
-
-                alert(Name)
+            };
+            const { data } = await axios.post(
+                "/api/user",
+                {
+                    name,
+                    email,
+                    password,
+                    pic,
+                },
+                config             );
+            console.log(data);
             toast({
-                title: "registration is successfull",
+                title: "Registration Successful",
                 status: "success",
                 duration: 5000,
                 isClosable: true,
                 position: "bottom",
-
-            })
-            
+            });
             localStorage.setItem("userInfo", JSON.stringify(data));
             setLoading(false);
             navigate('/chats')
             // history.push("/chats");
-            
+
         } catch (error) {
             toast({
                 title: "Error Occured!",
