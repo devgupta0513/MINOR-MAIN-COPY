@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/layout"
  
-import SideDrawer from "../components/miscellaneous/SideDrawer"
+// import SideDrawer from "../components/miscellaneous/SideDrawer"
 
  
 const ChatPage = () => {
