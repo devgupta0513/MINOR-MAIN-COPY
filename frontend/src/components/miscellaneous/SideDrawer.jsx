@@ -18,7 +18,7 @@ const SideDrawer = ({ user }) => {
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            bg="white"
+            bg="white" 
             w="100%"
             p="5px 10px 5px 10px"
             borderWidth="5px"

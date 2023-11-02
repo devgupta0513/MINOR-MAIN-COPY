@@ -9,10 +9,13 @@ export const ChatContext = createContext();
 
 const ChatPage = () => {
   // Mock ChatState for example purposes
+  var n=JSON.parse(localStorage.getItem("userInfo"));
   const ChatState = {
     user: {
-      name: 'John Doe',
-      // other user properties
+      name: n.name,
+      email:n.email,
+      pic:n.pic
+      // other user propert
     },
     // other context values
   };
