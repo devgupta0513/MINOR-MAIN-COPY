@@ -83,8 +83,8 @@ const MyChats = () => {
 
 
         >
-          <GroupChatModel>
           MY chats
+          <GroupChatModel>
           <Button
             display="flex"
             fontSize={{ base: "17px", md: "10px", lg: "17px" }}
