@@ -9,8 +9,7 @@ import { getSender } from '../../config/ChatLogics';
 import GroupChatModel from './GroupChatModel';
 
 
-const MyChats = () => {
-
+const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
 
   const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
@@ -55,7 +54,7 @@ const MyChats = () => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
 
-  }, []);
+  }, [fetchAgain]);
 
 
 
@@ -85,14 +84,14 @@ const MyChats = () => {
         >
           MY chats
           <GroupChatModel>
-          <Button
-            display="flex"
-            fontSize={{ base: "17px", md: "10px", lg: "17px" }}
-            rightIcon={<AddIcon />}
+            <Button
+              display="flex"
+              fontSize={{ base: "17px", md: "10px", lg: "17px" }}
+              rightIcon={<AddIcon />}
             >
-            New Group Chat
-          </Button>
-            </GroupChatModel>
+              New Group Chat
+            </Button>
+          </GroupChatModel>
 
         </Box>
 
