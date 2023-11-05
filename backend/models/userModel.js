@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema(
         }//will take link isliye string
 
     },
-    { timeStamps: true }
+    { timestamps: true }
 );
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
@@ -30,3 +30,4 @@ userSchema.pre('save', async function (next) {
 })
 const User = mongoose.model("User", userSchema);
 module.exports = User;
+// module.exports = mongoose.model("user", userSchema);
