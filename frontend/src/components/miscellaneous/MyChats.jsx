@@ -25,7 +25,7 @@ const MyChats = ({ fetchAgain }) => {
       };
 
       const { data } = await axios.get("/api/chat", config);
-      console.log(data);
+
       setChats(data);
 
 
@@ -53,8 +53,8 @@ const MyChats = ({ fetchAgain }) => {
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
-
-  }, [fetchAgain]);
+    // eslint-disable-next-line
+ }, [fetchAgain]);
 
 
 
@@ -96,7 +96,7 @@ const MyChats = ({ fetchAgain }) => {
         </Box>
 
         <Box
-          d="flex"
+          display="flex"
           flexDir="column"
           p={3}
           bg="#F8F8F8"

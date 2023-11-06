@@ -114,7 +114,7 @@ const SignUp = () => {
             localStorage.setItem("userInfo", JSON.stringify(data));
             setLoading(false);
             navigate('/chat')
-            // history.push("/chats");
+            
 
         } catch (error) {
             toast({
