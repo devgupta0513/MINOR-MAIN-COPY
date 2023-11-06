@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, FormControl, IconButton, Input, Spinner, Text, useToast } from "@chakra-ui/react";
 import { ChatState } from './context/ChatProvider';
 import { ArrowBackIcon } from "@chakra-ui/icons";
@@ -6,6 +6,8 @@ import { getSender, getSenderFull } from "../config/ChatLogics";
 import ProfileModal from "./miscellaneous/ProfileModel";
 import UpdateGroupChatModal from './miscellaneous/UpdateGroupChatModal';
 import axios from 'axios';
+import './style.css'
+import ScrollableChat from './ScrollableChat';
 
 
 
@@ -38,7 +40,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           "/api/message",
           {
             content: newMessage,
-            chatId: selectedChat,
+            chatId: selectedChat._id,
           },
           config
         );
@@ -78,8 +80,44 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
 
 
+  const fetchMessages = async () => {
+    if (!selectedChat) return;
 
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
 
+      setLoading(true);
+
+      const { data } = await axios.get(
+        `/api/message/${selectedChat._id}`,
+        config
+      );
+      setMessages(data);
+      setLoading(false);
+      console.log(messages);
+
+      //   socket.emit("join chat", selectedChat._id);
+    } catch (error) {
+      toast({
+        title: "Error Occured!",
+        description: "Failed to Load the Messages",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchMessages();
+    //selectedChatCompare = selectedChat;
+    // eslint-disable-next-line
+  }, [selectedChat]);
 
 
 
@@ -116,7 +154,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             ) : (
               <>{selectedChat.chatName.toUpperCase()}
                 <UpdateGroupChatModal
-
+                  fetchMessages={fetchMessages}
                   fetchAgain={fetchAgain}
                   setFetchAgain={setFetchAgain}
                 />
@@ -146,7 +184,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             />
           ) : (
             <div className="messages">
-              {/* <ScrollableChat messages={messages} /> */}
+              <ScrollableChat messages={messages} />
             </div>
           )}
           <FormControl
