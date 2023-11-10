@@ -8,8 +8,15 @@ import UpdateGroupChatModal from './miscellaneous/UpdateGroupChatModal';
 import axios from 'axios';
 import './style.css'
 import ScrollableChat from './ScrollableChat';
+import io from "socket.io-client"
+import Lottie from 'react-lottie';
+import animationData from "../Animations/typing.json";
 
 
+
+
+const endPoint = "http://localhost:5000"
+var socket, selectedChatCompare;
 
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -22,12 +29,26 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const toast = useToast()
   const { selectedChat, setSelectedChat, user, notification, setNotification } =
     ChatState();
+    const defaultOptions = {
+      loop: true,
+      autoplay: true,
+      animationData: animationData,
+      rendererSettings: {
+        preserveAspectRatio: "xMidYMid slice",
+      },
+    };
 
-
-
+    useEffect(() => {
+      socket = io(endPoint);
+      socket.emit("setup", user);
+      socket.on("connected", () => setSocketConnected(true));
+      socket.on("typing", () => setIsTyping(true));
+      socket.on("stop typing", () => setIsTyping(false));
+  
+    }, []);
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
-      //   socket.emit("stop typing", selectedChat._id);
+       socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
           headers: {
@@ -44,7 +65,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
-        //     socket.emit("new message", data);
+       socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (error) {
         toast({
@@ -58,25 +79,29 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     }
   };
+
+ 
+
+
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
 
-    // if (!socketConnected) return;
+    if (!socketConnected) return;
 
-    // if (!typing) {
-    //   setTyping(true);
-    //   socket.emit("typing", selectedChat._id);
-    // }
-    // let lastTypingTime = new Date().getTime();
-    // var timerLength = 3000;
-    // setTimeout(() => {
-    //   var timeNow = new Date().getTime();
-    //   var timeDiff = timeNow - lastTypingTime;
-    //   if (timeDiff >= timerLength && typing) {
-    //     socket.emit("stop typing", selectedChat._id);
-    //     setTyping(false);
-    //   }
-    // }, timerLength);
+    if (!typing) {
+      setTyping(true);
+      socket.emit("typing", selectedChat._id);
+    }
+    let lastTypingTime = new Date().getTime();
+    var timerLength = 3000;
+    setTimeout(() => {
+      var timeNow = new Date().getTime();
+      var timeDiff = timeNow - lastTypingTime;
+      if (timeDiff >= timerLength && typing) {
+        socket.emit("stop typing", selectedChat._id);
+        setTyping(false);
+      }
+    }, timerLength);
   };
 
 
@@ -100,7 +125,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       setLoading(false);
       console.log(messages);
 
-      //   socket.emit("join chat", selectedChat._id);
+      socket.emit("join chat", selectedChat._id);
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -115,10 +140,29 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   useEffect(() => {
     fetchMessages();
-    //selectedChatCompare = selectedChat;
-    // eslint-disable-next-line
+    selectedChatCompare = selectedChat;
+  
   }, [selectedChat]);
 
+
+  
+  useEffect(() => {
+    socket.on("message recieved", (newMessageRecieved) => {
+      if (
+        !selectedChatCompare || 
+        selectedChatCompare._id !== newMessageRecieved.chat._id
+      )
+       {
+        // if (!notification.includes(newMessageRecieved)) {
+        //   setNotification([newMessageRecieved, ...notification]);
+        //   setFetchAgain(!fetchAgain);
+        // }
+      } 
+      else {
+        setMessages([...messages, newMessageRecieved]);
+      }
+    });
+  });
 
 
 
@@ -193,18 +237,18 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             isRequired
             mt={3}
           >
-            {/* {istyping ? (
+            {istyping ? (
                 <div>
-                  <Lottie
+            {/* <Lottie
                     options={defaultOptions}
                     // height={50}
                     width={70}
                     style={{ marginBottom: 15, marginLeft: 0 }}
-                  />
+                  /> */}
                 </div>
               ) : (
                 <></>
-              )} */}
+              )}
             <Input
               variant="filled"
               bg="#E0E0E0"
