@@ -9,7 +9,7 @@ import axios from 'axios';
 import './style.css'
 import ScrollableChat from './ScrollableChat';
 import io from "socket.io-client"
-//import Lottie from 'react-lottie';
+import Lottie from 'react-lottie';
 import animationData from "../Animations/typing.json";
 
 
@@ -239,12 +239,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           >
             {istyping ? (
                 <div>
-            {/* <Lottie
+            <Lottie
                     options={defaultOptions}
                     // height={50}
                     width={70}
                     style={{ marginBottom: 15, marginLeft: 0 }}
-                  /> */}
+                  />
                 </div>
               ) : (
                 <></>
