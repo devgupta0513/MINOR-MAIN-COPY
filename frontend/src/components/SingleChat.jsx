@@ -9,7 +9,7 @@ import axios from 'axios';
 import './style.css'
 import ScrollableChat from './ScrollableChat';
 import io from "socket.io-client"
-import Lottie from 'react-lottie';
+//import Lottie from 'react-lottie';
 import animationData from "../Animations/typing.json";
 
 
