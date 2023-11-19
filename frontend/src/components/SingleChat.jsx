@@ -29,26 +29,26 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const toast = useToast()
   const { selectedChat, setSelectedChat, user, notification, setNotification } =
     ChatState();
-    const defaultOptions = {
-      loop: true,
-      autoplay: true,
-      animationData: animationData,
-      rendererSettings: {
-        preserveAspectRatio: "xMidYMid slice",
-      },
-    };
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
-    useEffect(() => {
-      socket = io(endPoint);
-      socket.emit("setup", user);
-      socket.on("connected", () => setSocketConnected(true));
-      socket.on("typing", () => setIsTyping(true));
-      socket.on("stop typing", () => setIsTyping(false));
-  
-    }, []);
+  useEffect(() => {
+    socket = io(endPoint);
+    socket.emit("setup", user);
+    socket.on("connected", () => setSocketConnected(true));
+    socket.on("typing", () => setIsTyping(true));
+    socket.on("stop typing", () => setIsTyping(false));
+    // eslint-disable-next-line 
+  }, []);
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
-       socket.emit("stop typing", selectedChat._id);
+      socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
           headers: {
@@ -65,7 +65,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
-       socket.emit("new message", data);
+        socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (error) {
         toast({
@@ -80,7 +80,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
- 
+
 
 
   const typingHandler = (e) => {
@@ -141,23 +141,22 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   useEffect(() => {
     fetchMessages();
     selectedChatCompare = selectedChat;
-  
+    // eslint-disable-next-line 
   }, [selectedChat]);
 
 
-  
+
   useEffect(() => {
     socket.on("message recieved", (newMessageRecieved) => {
       if (
-        !selectedChatCompare || 
+        !selectedChatCompare ||
         selectedChatCompare._id !== newMessageRecieved.chat._id
-      )
-       {
-        // if (!notification.includes(newMessageRecieved)) {
-        //   setNotification([newMessageRecieved, ...notification]);
-        //   setFetchAgain(!fetchAgain);
-        // }
-      } 
+      ) {
+        if (!notification.includes(newMessageRecieved)) {
+          setNotification([newMessageRecieved, ...notification]);
+          setFetchAgain(!fetchAgain);
+        }
+      }
       else {
         setMessages([...messages, newMessageRecieved]);
       }
@@ -238,17 +237,17 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             mt={3}
           >
             {istyping ? (
-                <div>
-            <Lottie
-                    options={defaultOptions}
-                    // height={50}
-                    width={70}
-                    style={{ marginBottom: 15, marginLeft: 0 }}
-                  />
-                </div>
-              ) : (
-                <></>
-              )}
+              <div>
+                <Lottie
+                  options={defaultOptions}
+                  // height={50}
+                  width={70}
+                  style={{ marginBottom: 15, marginLeft: 0 }}
+                />
+              </div>
+            ) : (
+              <></>
+            )}
             <Input
               variant="filled"
               bg="#E0E0E0"
